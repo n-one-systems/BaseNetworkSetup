@@ -1,10 +1,14 @@
 ---
-- name: Configure iperf3 servers
-  hosts: servers
-  roles:
-    - role: iperf3_server
+#- name: Configure iperf3 servers
+#  hosts: servers
+#  roles:
+#    - role: iperf3_server
+#
+#- name: Configure iperf3 clients
+#  hosts: clients
+#  roles:
+#    - role: iperf3_client
 
-- name: Configure iperf3 clients
-  hosts: clients
-  roles:
-    - role: iperf3_client
+- name: Test full Mesh
+  ansible.builtin.import_playbook: ../../playbooks/netperf_fullmesh.yml
+
