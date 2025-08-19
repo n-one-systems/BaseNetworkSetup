@@ -1,0 +1,19 @@
+{% set base_port = iperf3_client_base_port | int %}
+TARGET_IP={{ item.target }}
+{% if item.port is string and 'default+' in item.port %}
+TARGET_PORT={{ base_port + (item.port.split('+')[1] | int) }}
+{% else %}
+TARGET_PORT={{ item.port | default(base_port) }}
+{% endif %}
+{% if item.protocol | default('tcp') == 'udp' %}
+PROTOCOL=--udp
+{% else %}
+PROTOCOL=
+{% endif %}
+{% if item.extra_args is defined %}
+EXTRA_ARGS={{ item.extra_args }}
+{% elif item.bandwidth is defined %}
+EXTRA_ARGS=-b {{ item.bandwidth }}
+{% else %}
+EXTRA_ARGS=
+{% endif %}

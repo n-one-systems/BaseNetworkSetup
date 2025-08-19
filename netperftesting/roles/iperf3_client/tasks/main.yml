@@ -1,0 +1,49 @@
+---
+- name: Install iperf3
+  ansible.builtin.package:
+    name: "{{ iperf3_client_package }}"
+    state: present
+  become: true
+
+- name: Ensure iperf3 client config directory exists
+  ansible.builtin.file:
+    path: "{{ iperf3_client_conf_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  become: true
+
+- name: Deploy iperf3 client systemd template
+  ansible.builtin.template:
+    src: iperf3-client@.service.j2
+    dest: /etc/systemd/system/iperf3-client@.service
+    owner: root
+    group: root
+    mode: '0644'
+  become: true
+  notify: Reload systemd
+
+- name: Render iperf3 client configs
+  ansible.builtin.template:
+    src: iperf3-client.conf.j2
+    dest: "{{ iperf3_client_conf_dir }}/{{ item.name }}.conf"
+    owner: root
+    group: root
+    mode: '0644'
+  loop: "{{ iperf3_client_instances }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: iperf3_client_instances | length > 0
+  become: true
+
+- name: Enable iperf3 client services
+  ansible.builtin.systemd:
+    name: "iperf3-client@{{ item.name }}"
+    enabled: true
+    state: started
+  loop: "{{ iperf3_client_instances }}"
+  loop_control:
+    label: "iperf3-client@{{ item.name }}"
+  when: iperf3_client_instances | length > 0
+  become: true
