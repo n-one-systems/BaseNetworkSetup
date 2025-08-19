@@ -5,7 +5,9 @@ to run multiple iperf3 client instances with per-instance configuration files.
 Each run logs to `journald` and stores its JSON results in a per-connection file
 for later analysis. Each configuration file defines `TARGET_IP`, `TARGET_PORT`,
 `PROTOCOL`, and optional `EXTRA_ARGS` variables used by the service to connect
-to different servers, ports, and protocols.
+to different servers, ports, and protocols. All services execute as a minimal
+`iperf3` system user; the role ensures this user exists and that the log
+directory is owned by it.
 
 ## Variables
 

@@ -5,8 +5,8 @@ Wants=network-online.target
 
 [Service]
 Type=simple
-User=nobody
-Group=nogroup
+User=iperf3
+Group=iperf3
 ExecStart=/usr/bin/iperf3 -s -p %i
 Restart=on-failure
 StandardOutput=journal
