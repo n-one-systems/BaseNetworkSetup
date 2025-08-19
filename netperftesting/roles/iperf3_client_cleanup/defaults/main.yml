@@ -1,4 +1,0 @@
----
-iperf3_client_cleanup_package: iperf3
-iperf3_client_cleanup_conf_dir: /etc/iperf3-client
-iperf3_client_cleanup_log_dir: /var/log/iperf3-client

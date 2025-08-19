@@ -1,0 +1,6 @@
+---
+iperf3_cleanup_package: iperf3
+iperf3_cleanup_remove_package: true
+iperf3_cleanup_client_conf_dir: /etc/iperf3-client
+iperf3_cleanup_client_log_dir: /var/log/iperf3-client
+iperf3_cleanup_server_log_dir: /var/log/iperf3
