@@ -1,0 +1,43 @@
+---
+- name: Stress test iperf3 UDP connections
+  hosts: test_hosts
+  gather_facts: false
+  vars:
+    base_port: 5200
+    connections_per_pair: 1
+    test_duration: 600
+  tasks:
+    - name: Initialize instance lists
+      ansible.builtin.set_fact:
+        iperf3_server_instances: []
+        iperf3_client_instances: []
+
+    - name: Build iperf3 server instance list
+      ansible.builtin.set_fact:
+        iperf3_server_instances: "{{ iperf3_server_instances + [base_port + hostvars[pair[0]].id * connections_per_pair + pair[1]] }}"
+      loop: "{{ (ansible_play_hosts | difference([inventory_hostname])) | product(range(connections_per_pair | int)) | list }}"
+      loop_control:
+        loop_var: pair
+
+    - name: Build iperf3 client instance list
+      ansible.builtin.set_fact:
+        iperf3_client_instances: "{{ iperf3_client_instances + [{
+            'name': pair[0] ~ '_' ~ pair[1],
+            'target': hostvars[pair[0]].test_ip.split('/') | first,
+            'port': base_port + hostvars[inventory_hostname].id * connections_per_pair + pair[1],
+            'protocol': 'udp',
+            'extra_args': '-b 0 -t ' ~ (test_duration | string)
+          }] }}"
+      loop: "{{ (ansible_play_hosts | difference([inventory_hostname])) | product(range(connections_per_pair | int)) | list }}"
+      loop_control:
+        loop_var: pair
+
+    - name: Configure iperf3 servers
+      ansible.builtin.include_role:
+        name: nsys.netperftesting.iperf3_server
+
+    - name: Configure iperf3 clients
+      ansible.builtin.include_role:
+        name: nsys.netperftesting.iperf3_client
+      vars:
+        iperf3_client_base_port: "{{ base_port }}"

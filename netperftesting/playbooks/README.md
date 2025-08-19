@@ -9,6 +9,8 @@ Sample playbooks for network performance testing will be placed here.
   in the `servers` group tests connectivity with all other hosts.
 - `netperf_single_client.yml` - designates one host as the client and runs
   iperf3 tests against all other hosts.
+- `netperf_stress.yml` - launches multiple concurrent UDP streams between all
+  hosts for high-stress testing.
 
 ### `netperf_single_client.yml`
 
@@ -46,4 +48,26 @@ Run a UDP test with an optional bandwidth limit:
 ```bash
 ansible-playbook -i inventory.yaml netperftesting/playbooks/netperf_single_client.yml \
   -e "protocol=udp bandwidth=100M"
+```
+
+### `netperf_stress.yml`
+
+This playbook starts `connections_per_pair` iperf3 server instances on each
+host for every other host and launches the same number of UDP clients toward
+each peer. Clients run with unlimited bandwidth (`-b 0`) for
+`test_duration` seconds (default `600`) to maximize network load.
+
+#### Usage
+
+Run with defaults:
+
+```bash
+ansible-playbook -i inventory.yaml netperftesting/playbooks/netperf_stress.yml
+```
+
+Specify five connections per pair for 300-second runs:
+
+```bash
+ansible-playbook -i inventory.yaml netperftesting/playbooks/netperf_stress.yml \
+  -e "connections_per_pair=5 test_duration=300"
 ```
