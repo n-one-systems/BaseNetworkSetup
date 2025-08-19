@@ -18,8 +18,8 @@
   ansible.builtin.file:
     path: "{{ iperf3_client_log_dir }}"
     state: directory
-    owner: root
-    group: root
+    owner: nobody
+    group: nogroup
     mode: '0755'
   become: true
 

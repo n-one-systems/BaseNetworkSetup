@@ -10,7 +10,6 @@ Group=nogroup
 EnvironmentFile=-{{ iperf3_client_conf_dir }}/%i.conf
 ExecStart=/bin/sh -c "/usr/bin/iperf3 -c $TARGET_IP -p $TARGET_PORT $PROTOCOL $EXTRA_ARGS -J | tee {{ iperf3_client_log_dir }}/{{ inventory_hostname }}-to-%i.json"
 Restart=on-failure
-StandardOutput=journal
 StandardError=journal
 SyslogIdentifier=iperf3-client-%i
 
