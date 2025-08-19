@@ -17,6 +17,11 @@ servers, ports, and protocols.
   - `bandwidth` (optional): Bandwidth for UDP tests
   - `extra_args` (optional): Additional iperf3 arguments
 
+- `iperf3_client_auto_start`: Whether client services should be started
+  automatically after configuration. Defaults to `true`.
+- `iperf3_client_auto_enable`: Whether client services should be enabled to
+  start at boot. Defaults to `true`.
+
 Example:
 
 ```yaml

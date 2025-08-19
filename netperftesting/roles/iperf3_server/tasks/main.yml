@@ -14,3 +14,12 @@
     mode: '0644'
   become: true
   notify: Reload systemd
+
+- name: Enable iperf3 server instances
+  ansible.builtin.systemd:
+    name: "iperf3@{{ item }}"
+    enabled: true
+    state: started
+  loop: "{{ iperf3_server_instances }}"
+  when: iperf3_server_instances | length > 0
+  become: true

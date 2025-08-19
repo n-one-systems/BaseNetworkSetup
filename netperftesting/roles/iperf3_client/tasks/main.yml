@@ -37,11 +37,26 @@
   when: iperf3_client_instances | length > 0
   become: true
 
-- name: Enable iperf3 client services
+- name: Find existing client configs
+  ansible.builtin.find:
+    paths: "{{ iperf3_client_conf_dir }}"
+    patterns: "*.conf"
+  register: iperf3_client_existing_configs
+  become: true
+
+- name: Remove obsolete client configs
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: absent
+  loop: "{{ iperf3_client_existing_configs.files }}"
+  when: item.path | basename | regex_replace('\\.conf$', '') not in (iperf3_client_instances | map(attribute='name'))
+  become: true
+
+- name: Enable and start iperf3 client services
   ansible.builtin.systemd:
     name: "iperf3-client@{{ item.name }}"
-    enabled: true
-    state: started
+    enabled: "{{ iperf3_client_auto_enable }}"
+    state: "{{ 'started' if iperf3_client_auto_start else 'stopped' }}"
   loop: "{{ iperf3_client_instances }}"
   loop_control:
     label: "iperf3-client@{{ item.name }}"
