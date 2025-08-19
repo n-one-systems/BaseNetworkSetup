@@ -1,0 +1,58 @@
+---
+dependency:
+  name: galaxy
+
+driver:
+  name: docker
+
+platforms:
+  - name: server1
+    image: geerlingguy/docker-debian12-ansible:latest
+    command: /sbin/init
+    privileged: true
+    pre_build_image: true
+    groups:
+      - servers
+  - name: server2
+    image: geerlingguy/docker-debian12-ansible:latest
+    command: /sbin/init
+    privileged: true
+    pre_build_image: true
+    groups:
+      - servers
+  - name: client1
+    image: geerlingguy/docker-debian12-ansible:latest
+    command: /sbin/init
+    privileged: true
+    pre_build_image: true
+    groups:
+      - clients
+  - name: client2
+    image: geerlingguy/docker-debian12-ansible:latest
+    command: /sbin/init
+    privileged: true
+    pre_build_image: true
+    groups:
+      - clients
+
+provisioner:
+  name: ansible
+  playbooks:
+    converge: converge.yml
+  inventory:
+    group_vars:
+      servers:
+        iperf3_server_instances:
+          - 5201
+    host_vars:
+      client1:
+        iperf3_client_instances:
+          - name: to-server1
+            target: server1
+      client2:
+        iperf3_client_instances:
+          - name: to-server2
+            target: server2
+
+verifier:
+  name: ansible

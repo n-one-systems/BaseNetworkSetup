@@ -1,0 +1,10 @@
+---
+- name: Configure iperf3 servers
+  hosts: servers
+  roles:
+    - role: iperf3_server
+
+- name: Configure iperf3 clients
+  hosts: clients
+  roles:
+    - role: iperf3_client
