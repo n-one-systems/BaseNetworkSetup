@@ -1,0 +1,37 @@
+all:
+  children:
+    mikrotik_rtr:
+      vars:
+        ansible_user: admin
+        id_offset: 1
+        ansible_host: "{{ '192.168.10.' ~ (id + id_offset) }}"
+      hosts:
+        mkt-rtr-01:
+          id: 1
+
+    mikrotik_sw:
+      vars:
+        ansible_user: admin
+        id_offset: 3
+        ansible_host: "{{ '192.168.10.' ~ (id + id_offset) }}"
+      hosts:
+        mkt-sw-01:
+          id: 1
+        mkt-sw-02:
+          id: 2
+
+    servers:
+      vars:
+        ansible_user: ansible
+        become_method: su
+        id_offset: 10
+        ansible_host: "{{ '192.168.10.' ~ (id + id_offset) }}"
+        test_ip:  "{{ '192.168.254.' ~ (id + id_offset) ~ '/24' }}"
+      hosts:
+        deb-srv-01:
+          id: 1
+        deb-srv-02:
+          id: 2
+        deb-srv-03:
+          id: 3
+          # test_ip: "192.168.254.123/24" sample of overwriting default IPs
