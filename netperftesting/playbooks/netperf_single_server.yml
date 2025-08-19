@@ -1,0 +1,40 @@
+---
+- name: Single server iperf3 test
+  hosts: test_hosts
+  gather_facts: false
+  vars:
+    base_port: 5201
+    protocol: tcp
+    bandwidth: null
+  tasks:
+    - name: Build iperf3 client instance list
+      ansible.builtin.set_fact:
+        iperf3_client_instances: >-
+          {{ iperf3_client_instances | default([]) + [
+              {
+                'name': server_host,
+                'target': hostvars[server_host].test_ip.split('/') | first,
+                'port': base_port,
+                'protocol': protocol
+              } | combine(
+                (protocol == 'udp' and bandwidth is not none)
+                | ternary({'bandwidth': bandwidth}, {})
+              )
+            ]
+          }}
+      when: inventory_hostname != server_host
+
+    - name: Configure iperf3 server
+      ansible.builtin.include_role:
+        name: nsys.netperftesting.iperf3_server
+      vars:
+        iperf3_server_instances:
+          - "{{ base_port }}"
+      when: inventory_hostname == server_host
+
+    - name: Configure iperf3 clients
+      ansible.builtin.include_role:
+        name: nsys.netperftesting.iperf3_client
+      vars:
+        iperf3_client_base_port: "{{ base_port }}"
+      when: inventory_hostname != server_host
