@@ -5,12 +5,11 @@ Wants=network-online.target
 
 [Service]
 Type=simple
-User=nobody
-Group=nogroup
+User=iperf3
+Group=iperf3
 EnvironmentFile=-{{ iperf3_client_conf_dir }}/%i.conf
-ExecStart=/usr/bin/iperf3 -c $TARGET_IP -p $TARGET_PORT $PROTOCOL $EXTRA_ARGS
+ExecStart=/bin/sh -c "/usr/bin/iperf3 -c $TARGET_IP -p $TARGET_PORT $PROTOCOL $EXTRA_ARGS -J | tee {{ iperf3_client_log_dir }}/{{ inventory_hostname }}-to-%i.json"
 Restart=on-failure
-StandardOutput=journal
 StandardError=journal
 SyslogIdentifier=iperf3-client-%i
 
