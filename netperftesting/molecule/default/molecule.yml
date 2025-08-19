@@ -75,10 +75,12 @@ provisioner:
         iperf3_client_instances:
           - name: to-server1
             target: server1
+            port: 5201
       client2:
         iperf3_client_instances:
           - name: to-server2
             target: server2
+            port: 5201
 
 verifier:
   name: ansible
