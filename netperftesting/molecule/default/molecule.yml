@@ -7,9 +7,12 @@ driver:
 
 platforms:
 - name: server1
-  image: geerlingguy/docker-debian13-ansible:latest
+  #image: geerlingguy/docker-debian13-ansible:latest
+  image: debian:speed 
   command: /sbin/init
   cgroupns_mode: host
+  memory: 2046M
+  cpu: 1
   tmpfs:
   - /run
   - /tmp
@@ -24,9 +27,12 @@ platforms:
   - name: molec-net
     aliases: ["server1"]
 - name: server2
-  image: geerlingguy/docker-debian13-ansible:latest
+  #image: geerlingguy/docker-debian13-ansible:latest
+  image: debian:speed 
   command: /sbin/init
   cgroupns_mode: host
+  memory: 2046M
+  cpu: 1
   tmpfs:
   - /run
   - /tmp
@@ -41,9 +47,12 @@ platforms:
   - name: molec-net
     aliases: ["server2"]
 - name: client1
-  image: geerlingguy/docker-debian13-ansible:latest
+  #image: geerlingguy/docker-debian13-ansible:latest
+  image: debian:speed 
   command: /sbin/init
   cgroupns_mode: host
+  memory: 2046M
+  cpu: 1
   tmpfs:
   - /run
   - /tmp
@@ -58,9 +67,12 @@ platforms:
   - name: molec-net
     aliases: ["client1"]
 - name: client2
-  image: geerlingguy/docker-debian13-ansible:latest
+  #image: geerlingguy/docker-debian13-ansible:latest
+  image: debian:speed 
   command: /sbin/init
   cgroupns_mode: host
+  memory: 2046M
+  cpu: 1
   tmpfs:
   - /run
   - /tmp

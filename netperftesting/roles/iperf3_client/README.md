@@ -2,9 +2,10 @@
 
 Installs iperf3 and provides a systemd template unit (`iperf3-client@.service`)
 to run multiple iperf3 client instances with per-instance configuration files.
-Each configuration file defines `TARGET_IP`, `TARGET_PORT`, `PROTOCOL`, and
-optional `EXTRA_ARGS` variables used by the service to connect to different
-servers, ports, and protocols.
+Each run logs to `journald` and stores its JSON results in a per-connection file
+for later analysis. Each configuration file defines `TARGET_IP`, `TARGET_PORT`,
+`PROTOCOL`, and optional `EXTRA_ARGS` variables used by the service to connect
+to different servers, ports, and protocols.
 
 ## Variables
 
@@ -16,6 +17,11 @@ servers, ports, and protocols.
   - `protocol`: `tcp` (default) or `udp`
   - `bandwidth` (optional): Bandwidth for UDP tests
   - `extra_args` (optional): Additional iperf3 arguments
+
+- `iperf3_client_log_dir`: Directory where JSON output from each client run
+  is stored. Log files are named `<client>-to-<instance>.json` where
+  `<client>` is the Ansible inventory hostname and `<instance>` is the service
+  instance name. Defaults to `/var/log/iperf3-client`.
 
 - `iperf3_client_auto_start`: Whether client services should be started
   automatically after configuration. Defaults to `true`.
