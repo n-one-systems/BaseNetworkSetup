@@ -19,6 +19,9 @@ platforms:
   pre_build_image: true
   groups:
   - servers
+  networks:
+  - name: molec-net
+    aliases: ["server1"]
 - name: server2
   image: geerlingguy/docker-debian13-ansible:latest
   command: /sbin/init
@@ -32,6 +35,9 @@ platforms:
   pre_build_image: true
   groups:
   - servers
+  networks:
+  - name: molec-net
+    aliases: ["server2"]
 - name: client1
   image: geerlingguy/docker-debian13-ansible:latest
   command: /sbin/init
@@ -45,6 +51,9 @@ platforms:
   pre_build_image: true
   groups:
   - clients
+  networks:
+  - name: molec-net
+    aliases: ["client1"]
 - name: client2
   image: geerlingguy/docker-debian13-ansible:latest
   command: /sbin/init
@@ -58,6 +67,9 @@ platforms:
   pre_build_image: true
   groups:
   - clients
+  networks:
+  - name: molec-net
+    aliases: ["client2"]
 
 provisioner:
   env:
