@@ -5,6 +5,15 @@
     state: present
   become: true
 
+- name: Ensure iperf3 system user exists
+  ansible.builtin.user:
+    name: iperf3
+    system: true
+    shell: /usr/sbin/nologin
+    create_home: false
+    home: /nonexistent
+  become: true
+
 - name: Deploy iperf3 systemd template
   ansible.builtin.template:
     src: iperf3@.service.j2
