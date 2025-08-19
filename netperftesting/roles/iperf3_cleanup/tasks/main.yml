@@ -22,19 +22,19 @@
 
 - name: Remove iperf3 client config directory
   ansible.builtin.file:
-    path: "{{ iperf3_cleanup_client_conf_dir }}"
+    path: "{{ iperf3_client_conf_dir }}"
     state: absent
   become: true
 
 - name: Remove iperf3 client log directory
   ansible.builtin.file:
-    path: "{{ iperf3_cleanup_client_log_dir }}"
+    path: "{{ iperf3_client_log_dir }}"
     state: absent
   become: true
 
 - name: Remove iperf3 server log directory
   ansible.builtin.file:
-    path: "{{ iperf3_cleanup_server_log_dir }}"
+    path: "{{ iperf3_server_log_dir }}"
     state: absent
   become: true
 
@@ -54,7 +54,7 @@
 
 - name: Remove iperf3 package
   ansible.builtin.package:
-    name: "{{ iperf3_cleanup_package }}"
+    name: "{{ iperf3_client_package }}"
     state: absent
   when: iperf3_cleanup_remove_package
   become: true

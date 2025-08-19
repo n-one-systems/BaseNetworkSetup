@@ -1,6 +1,9 @@
 ---
-iperf3_cleanup_package: iperf3
 iperf3_cleanup_remove_package: true
-iperf3_cleanup_client_conf_dir: /etc/iperf3-client
-iperf3_cleanup_client_log_dir: /var/log/iperf3-client
-iperf3_cleanup_server_log_dir: /var/log/iperf3
+
+# Reuse service role variables so the same values can be supplied for
+# setup and teardown.
+iperf3_client_package: iperf3  # noqa var-naming
+iperf3_client_conf_dir: /etc/iperf3-client  # noqa var-naming
+iperf3_client_log_dir: /var/log/iperf3-client  # noqa var-naming
+iperf3_server_log_dir: /var/log/iperf3  # noqa var-naming
