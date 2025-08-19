@@ -61,4 +61,5 @@
   loop_control:
     label: "iperf3-client@{{ item.name }}"
   when: iperf3_client_instances | length > 0
+  change_when: false
   become: true
