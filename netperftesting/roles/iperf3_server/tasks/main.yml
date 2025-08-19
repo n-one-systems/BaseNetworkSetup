@@ -1,0 +1,16 @@
+---
+- name: Install iperf3
+  ansible.builtin.package:
+    name: "{{ iperf3_server_package }}"
+    state: present
+  become: true
+
+- name: Deploy iperf3 systemd template
+  ansible.builtin.template:
+    src: iperf3@.service.j2
+    dest: /etc/systemd/system/iperf3@.service
+    owner: root
+    group: root
+    mode: '0644'
+  become: true
+  notify: Reload systemd
