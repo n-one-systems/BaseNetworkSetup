@@ -29,6 +29,9 @@ directory is owned by it.
   automatically after configuration. Defaults to `true`.
 - `iperf3_client_auto_enable`: Whether client services should be enabled to
   start at boot. Defaults to `true`.
+- `iperf3_client_log_dir`: Directory for iperf3 client log files. Defaults to
+  `/var/log/iperf3-client` and is created with permissions suitable for the
+  `nobody` user.
 
 Example:
 
