@@ -1,0 +1,30 @@
+---
+- name: Full mesh iperf3 test
+  hosts: test_hosts
+  gather_facts: false
+  collections:
+    - nsys.netperftesting
+  vars:
+    base_port: 5200
+  tasks:
+    - name: Initialize instance lists
+      ansible.builtin.set_fact:
+        iperf3_server_instances: []
+        iperf3_client_instances: []
+
+    - name: Build iperf3 server and client instance lists
+      ansible.builtin.set_fact:
+        iperf3_server_instances: "{{ iperf3_server_instances + [ base_port + hostvars[item].id ] }}"
+        iperf3_client_instances: "{{ iperf3_client_instances + [ { 'name': item, 'target': hostvars[item].test_ip.split('/') | first, 'port': base_port + hostvars[inventory_hostname].id } ] }}"
+      loop: "{{ ansible_play_hosts }}"
+      when: item != inventory_hostname
+
+    - name: Configure iperf3 servers
+      ansible.builtin.include_role:
+        name: iperf3_server
+
+    - name: Configure iperf3 clients
+      ansible.builtin.include_role:
+        name: iperf3_client
+      vars:
+        iperf3_client_base_port: "{{ base_port }}"
