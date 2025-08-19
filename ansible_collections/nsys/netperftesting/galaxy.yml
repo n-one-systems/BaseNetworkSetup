@@ -1,0 +1,15 @@
+namespace: nsys
+name: netperftesting
+version: 0.1.0
+readme: README.md
+authors:
+  - N-one Systems
+description: >-
+  Ansible collection for network performance testing on Mikrotik switches and Debian servers.
+license: MIT
+tags:
+  - networking
+  - performance
+  - mikrotik
+  - debian
+  - testing
