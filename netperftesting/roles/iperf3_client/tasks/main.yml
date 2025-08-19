@@ -14,6 +14,15 @@
     mode: '0755'
   become: true
 
+- name: Ensure iperf3 client log directory exists
+  ansible.builtin.file:
+    path: "{{ iperf3_client_log_dir }}"
+    state: directory
+    owner: nobody
+    group: nogroup
+    mode: '0755'
+  become: true
+
 - name: Deploy iperf3 client systemd template
   ansible.builtin.template:
     src: iperf3-client@.service.j2
