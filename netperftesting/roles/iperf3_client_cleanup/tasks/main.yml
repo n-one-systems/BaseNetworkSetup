@@ -1,0 +1,51 @@
+---
+- name: Gather existing iperf3 client configs
+  ansible.builtin.find:
+    paths: "{{ iperf3_client_cleanup_conf_dir }}"
+    patterns: "*.conf"
+  register: iperf3_client_cleanup_existing_configs
+  failed_when: false
+  become: true
+
+- name: Stop and disable iperf3 client services
+  ansible.builtin.systemd:
+    name: "iperf3-client@{{ item.path | basename | regex_replace('\\.conf$', '') }}"
+    state: stopped
+    enabled: false
+  loop: "{{ iperf3_client_cleanup_existing_configs.files | default([]) }}"
+  loop_control:
+    label: "iperf3-client@{{ item.path | basename | regex_replace('\\.conf$', '') }}"
+  when: iperf3_client_cleanup_existing_configs.files | default([]) | length > 0
+  become: true
+
+- name: Remove iperf3 client config directory
+  ansible.builtin.file:
+    path: "{{ iperf3_client_cleanup_conf_dir }}"
+    state: absent
+  become: true
+
+- name: Remove iperf3 client log directory
+  ansible.builtin.file:
+    path: "{{ iperf3_client_cleanup_log_dir }}"
+    state: absent
+  become: true
+
+- name: Remove iperf3 client systemd template
+  ansible.builtin.file:
+    path: /etc/systemd/system/iperf3-client@.service
+    state: absent
+  notify: Reload systemd
+  become: true
+
+- name: Remove iperf3 package
+  ansible.builtin.package:
+    name: "{{ iperf3_client_cleanup_package }}"
+    state: absent
+  become: true
+
+- name: Remove iperf3 system user
+  ansible.builtin.user:
+    name: iperf3
+    state: absent
+    remove: true
+  become: true

@@ -1,0 +1,35 @@
+---
+- name: Stop and disable iperf3 server instances
+  ansible.builtin.systemd:
+    name: "iperf3@{{ item }}"
+    state: stopped
+    enabled: false
+  loop: "{{ iperf3_server_cleanup_instances }}"
+  when: iperf3_server_cleanup_instances | length > 0
+  become: true
+
+- name: Remove iperf3 server log directory
+  ansible.builtin.file:
+    path: "{{ iperf3_server_cleanup_log_dir }}"
+    state: absent
+  become: true
+
+- name: Remove iperf3 systemd template
+  ansible.builtin.file:
+    path: /etc/systemd/system/iperf3@.service
+    state: absent
+  notify: Reload systemd
+  become: true
+
+- name: Remove iperf3 package
+  ansible.builtin.package:
+    name: "{{ iperf3_server_cleanup_package }}"
+    state: absent
+  become: true
+
+- name: Remove iperf3 system user
+  ansible.builtin.user:
+    name: iperf3
+    state: absent
+    remove: true
+  become: true

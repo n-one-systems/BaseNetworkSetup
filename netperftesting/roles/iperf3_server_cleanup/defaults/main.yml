@@ -1,0 +1,4 @@
+---
+iperf3_server_cleanup_package: iperf3
+iperf3_server_cleanup_instances: []
+iperf3_server_cleanup_log_dir: /var/log/iperf3
