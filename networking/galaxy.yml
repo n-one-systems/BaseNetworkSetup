@@ -1,0 +1,13 @@
+namespace: nsys
+name: networking
+version: 0.1.0
+readme: README.md
+authors:
+  - N-one Systems
+  - Contributors
+description: Collection to setup switches (currently Mikrotik) and Debian servers.
+license: MIT
+tags:
+  - networking
+  - mikrotik
+  - debian
