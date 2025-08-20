@@ -35,7 +35,7 @@
 - name: Deploy iperf3 client systemd template
   ansible.builtin.template:
     src: iperf3-client@.service.j2
-    dest: /etc/systemd/system/iperf3-client@.service
+    dest: "/etc/systemd/system/iperf3{{ iperf_base_prefix }}-client@.service"
     owner: root
     group: root
     mode: '0644'
@@ -72,12 +72,12 @@
 
 - name: Enable and start iperf3 client services
   ansible.builtin.systemd:
-    name: "iperf3-client@{{ item.name }}"
+    name: "iperf3{{ iperf_base_prefix }}-client@{{ item.name }}"
     enabled: "{{ iperf3_client_auto_enable }}"
     state: "{{ 'started' if iperf3_client_auto_start else 'stopped' }}"
   loop: "{{ iperf3_client_instances }}"
   loop_control:
-    label: "iperf3-client@{{ item.name }}"
+    label: "iperf3{{ iperf_base_prefix }}-client@{{ item.name }}"
   when: iperf3_client_instances | length > 0
   changed_when: false
   become: true

@@ -5,6 +5,7 @@
   collections:
     - nsys.netperftesting
   vars:
+    iperf_base_prefix: "fullmesh"
     base_port: 5200
   tasks:
     - name: Initialize instance lists

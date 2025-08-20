@@ -1,7 +1,8 @@
 ---
+iperf_base_prefix: ""
 iperf3_client_package: iperf3
-iperf3_client_conf_dir: /etc/iperf3-client
-iperf3_client_log_dir: /var/log/iperf3-client
+iperf3_client_conf_dir: "/etc/iperf3{{ iperf_base_prefix }}-client"
+iperf3_client_log_dir: "/var/log/iperf3{{ iperf_base_prefix }}-client"
 iperf3_client_base_port: 5201
 iperf3_client_instances: []
 iperf3_client_auto_start: true

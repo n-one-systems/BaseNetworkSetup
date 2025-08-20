@@ -5,9 +5,11 @@
 
 - name: Collect iperf3 service units
   ansible.builtin.set_fact:
-    iperf3_cleanup_services: >-
-      {{ ansible_facts.services | dict2items | map(attribute='key') |
-         select('match', '^iperf3(-client)?@.*\\.service$') | list }}
+    iperf3_cleanup_services: "{{ ansible_facts.services | dict2items | map(attribute='key') | select('match', 'iperf3*') | list }}"
+#   {{ iperf_base_prefix | regex_escape }}?@.*\\.service$') | list }}
+- name: debug
+  debug:
+    msg: "{{ iperf3_cleanup_services }}"
 
 - name: Stop and disable iperf3 services
   ansible.builtin.systemd:
@@ -40,14 +42,14 @@
 
 - name: Remove iperf3 client systemd template
   ansible.builtin.file:
-    path: /etc/systemd/system/iperf3-client@.service
+    path: "/etc/systemd/system/iperf3{{ iperf_base_prefix }}-client@.service"
     state: absent
   notify: Reload systemd
   become: true
 
 - name: Remove iperf3 server systemd template
   ansible.builtin.file:
-    path: /etc/systemd/system/iperf3@.service
+    path: "/etc/systemd/system/iperf3{{ iperf_base_prefix }}@.service"
     state: absent
   notify: Reload systemd
   become: true

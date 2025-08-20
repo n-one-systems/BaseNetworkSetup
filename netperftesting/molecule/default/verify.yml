@@ -4,16 +4,16 @@
   gather_facts: false
   tasks:
     - name: Check iperf3 server service
-      ansible.builtin.command: systemctl is-active iperf3@5201
+      ansible.builtin.command: "systemctl is-active iperf3{{ iperf_base_prefix | default('') }}@5201"
       changed_when: false
       when: "'servers' in group_names"
 
     - name: Check iperf3 client to server1 service
-      ansible.builtin.command: systemctl is-active iperf3-client@to-server1
+      ansible.builtin.command: "systemctl is-active iperf3{{ iperf_base_prefix | default('') }}-client@to-server1"
       changed_when: false
       when: inventory_hostname == 'client1'
 
     - name: Check iperf3 client to server2 service
-      ansible.builtin.command: systemctl is-active iperf3-client@to-server2
+      ansible.builtin.command: "systemctl is-active iperf3{{ iperf_base_prefix | default('') }}-client@to-server2"
       changed_when: false
       when: inventory_hostname == 'client2'

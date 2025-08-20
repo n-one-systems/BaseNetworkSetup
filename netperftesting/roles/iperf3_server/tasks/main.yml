@@ -17,7 +17,7 @@
 - name: Deploy iperf3 systemd template
   ansible.builtin.template:
     src: iperf3@.service.j2
-    dest: /etc/systemd/system/iperf3@.service
+    dest: "/etc/systemd/system/iperf3{{ iperf_base_prefix }}@.service"
     owner: root
     group: root
     mode: '0644'
@@ -26,7 +26,7 @@
 
 - name: Enable iperf3 server instances
   ansible.builtin.systemd:
-    name: "iperf3@{{ item }}"
+    name: "iperf3{{ iperf_base_prefix }}@{{ item }}"
     enabled: true
     state: started
   loop: "{{ iperf3_server_instances }}"

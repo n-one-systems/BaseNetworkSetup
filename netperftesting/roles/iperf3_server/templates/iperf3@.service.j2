@@ -1,5 +1,5 @@
 [Unit]
-Description=iperf3 server on port %i
+Description=iperf3{{ iperf_base_prefix }} server on port %i
 After=network-online.target
 Wants=network-online.target
 
@@ -11,7 +11,7 @@ ExecStart=/usr/bin/iperf3 -s -p %i
 Restart=on-failure
 StandardOutput=journal
 StandardError=journal
-SyslogIdentifier=iperf3-server-%i
+SyslogIdentifier=iperf3{{ iperf_base_prefix }}-server-%i
 
 [Install]
 WantedBy=multi-user.target

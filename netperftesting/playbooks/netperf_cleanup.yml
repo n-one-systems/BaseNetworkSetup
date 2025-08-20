@@ -1,0 +1,8 @@
+---
+- name: Clean iperf3 settings
+  hosts: test_hosts
+  gather_facts: false
+  vars:
+    iperf3_cleanup_remove_package: false
+  roles:
+  - role: iperf3_cleanup
