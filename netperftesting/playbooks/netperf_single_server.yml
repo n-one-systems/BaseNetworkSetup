@@ -3,6 +3,7 @@
   hosts: test_hosts
   gather_facts: false
   vars:
+    iperf_base_prefix: "singleserver"
     base_port: 5201
     protocol: tcp
     bandwidth: null

@@ -3,6 +3,7 @@
   hosts: test_hosts
   gather_facts: false
   vars:
+    iperf_base_prefix: "stresstest"
     base_port: 5200
     connections_per_pair: 1
     test_duration: 600
