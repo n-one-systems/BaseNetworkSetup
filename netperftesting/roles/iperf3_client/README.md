@@ -11,6 +11,9 @@ directory is owned by it.
 
 ## Variables
 
+- `iperf_base_prefix`: Optional string appended to the base `iperf3` name.
+  When set, services, configuration directories and log paths are prefixed
+  as `iperf3<prefix>` to avoid overwriting existing runs. Defaults to empty.
 - `iperf3_client_instances`: List of client service definitions. Each item
   should include:
   - `name`: Instance name (used for configuration file and systemd unit)
@@ -21,17 +24,17 @@ directory is owned by it.
   - `extra_args` (optional): Additional iperf3 arguments
 
 - `iperf3_client_log_dir`: Directory where JSON output from each client run
-  is stored. Log files are named `<client>-to-<instance>.json` where
+  is stored. Log files are named `<client>-to-<instance><prefix>.json` where
   `<client>` is the Ansible inventory hostname and `<instance>` is the service
-  instance name. Defaults to `/var/log/iperf3-client`.
+  instance name. Defaults to `/var/log/iperf3<prefix>-client`.
 
 - `iperf3_client_auto_start`: Whether client services should be started
   automatically after configuration. Defaults to `true`.
 - `iperf3_client_auto_enable`: Whether client services should be enabled to
   start at boot. Defaults to `true`.
 - `iperf3_client_log_dir`: Directory for iperf3 client log files. Defaults to
-  `/var/log/iperf3-client` and is created with permissions suitable for the
-  `nobody` user.
+  `/var/log/iperf3<prefix>-client` and is created with permissions suitable for
+  the `nobody` user.
 
 Example:
 

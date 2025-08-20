@@ -1,3 +1,4 @@
 ---
+iperf_base_prefix: ""
 iperf3_server_package: iperf3
 iperf3_server_instances: []
